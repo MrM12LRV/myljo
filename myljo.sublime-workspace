@@ -15,6 +15,36 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/server.py",
+			"settings":
+			{
+				"buffer_size": 878,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\nimport socket\nimport game_util\n\ndef run():\n    print \"Hi Myles, you are a(n)\" + game_util.add_strings(\"dank\",\"meme\")\n\n    result = game_util.add_numbers(3,5)\n\n    return result\n\ndef client_thread(clientsocket):\n    print \"Client: In client thread\"\n    print dir(clientsocket)\n\ndef run_client():\n    print \"Client: In client\"\n\n    #create an INET, STREAMing socket\n    while True:\n        try: s = socket.socket()\n        except: print \"########Exception########\"; continue\n        break\n    print \"Client: created socket\"\n    s.connect((socket.gethostname(), 12348))\n    print \"Client: connected\"\n    print \"Client:\", s.recv(1024)\n    s.close()\n\n\nif __name__ == \"__main__\":\n    run_client()",
+			"file": "src/game.py",
+			"file_size": 712,
+			"file_write_time": 131276698120000000,
+			"settings":
+			{
+				"buffer_size": 691,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "run.sh",
+			"settings":
+			{
+				"buffer_size": 93,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -48,10 +78,14 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/Joey/Documents/programs/Git_Repositories/sha"
+		"/Users/Joey/Documents/programs/Git_Repositories/sha",
+		"/Users/Joey/Documents/programs/Git_Repositories/sha/src"
 	],
 	"file_history":
 	[
+		"/Users/Joey/Documents/programs/Git_Repositories/sha/src/game_util.py",
+		"/Users/Joey/Documents/programs/Git_Repositories/sha/src/game.py",
+		"/Users/Joey/Documents/programs/Git_Repositories/sha/.gitignore",
 		"/Users/Joey/Desktop/pa9_P/pa9/pa9_mancala.py",
 		"/Users/Joey/Desktop/pa9_P/pa9_final/pa9_mancala.py",
 		"/Users/Joey/Desktop/pa9_P/PA9/pa9_mancala.py",
@@ -118,8 +152,107 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/server.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 878,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								566,
+								566
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"incomplete_sync": null,
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 93.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "src/game.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 691,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								598,
+								598
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 66.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "run.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 93,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								91,
+								91
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -140,6 +273,12 @@
 				0,
 				1,
 				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
 			]
 		],
 		"cols":
@@ -150,6 +289,7 @@
 		"rows":
 		[
 			0.0,
+			0.5,
 			1.0
 		]
 	},
@@ -204,7 +344,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 203.0,
+	"side_bar_width": 206.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
