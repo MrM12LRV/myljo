@@ -1,6 +1,8 @@
 
 import socket
 import game_util
+from time import sleep
+import Tkinter
 
 def run():
     print "Hi Myles, you are a(n)" + game_util.add_strings("dank","meme")
@@ -14,20 +16,31 @@ def client_thread(clientsocket):
     print dir(clientsocket)
 
 def run_client():
-    print "Client: In client"
-
+    global s
     #create an INET, STREAMing socket
     while True:
         try: s = socket.socket()
         except: print "########Exception########"; continue
         break
-    print "Client: created socket"
+
     s.connect((socket.gethostname(), 12348))
-    print "Client: connected"
-    while True: pass
-    print "Client:", s.recv(1024)
+
+    player_id = s.recv(1024)
+
+    window = Tkinter.Tk()
+    c = Tkinter.Canvas(window, width = 100, height = 100)
+    c.pack()
+    c.update()
+    window.bind("<Key>", lambda event: s.send(event.char))
+
+    window.mainloop()
+
     s.close()
 
 
 if __name__ == "__main__":
-    run_client()
+    try:
+        run_client()
+    except Exception as e:
+        print "Client error:", e.message
+        s.close()
