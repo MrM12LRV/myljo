@@ -6,7 +6,7 @@ from draw_util import ccreate_rectangle
 from time import sleep
 
 def recv_char(s):
-    try: return s.recv(1)
+    try: return s.recv(2)
     except: return None
 
 class Player(object):
@@ -31,9 +31,8 @@ def waitForPlayers(serversocket):
 
         player_id = found_players
         players += [Player(clientsocket, address, player_id)]
-        clientsocket.send(str(player_id))
+        clientsocket.send("0" + str(player_id))
 
-        clientsocket.send(str(player_id))
         found_players += 1
 
         wait_for_more = raw_input("Wait for more players?[Y/n] ")
