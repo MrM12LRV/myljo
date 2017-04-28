@@ -46,13 +46,13 @@ def run_server():
     global serversocket, p1, p2
     print "Server: In server."
 
-    serversocket = socket.socket()
+    serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print "Server: Created socket"
 
     serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     #bind the socket to a public host,
     # and a well-known port
-    serversocket.bind((socket.gethostname(), 12348))
+    serversocket.bind((socket.gethostname(), 8000))
     print "Server: binded socket"
     #become a server socket
     serversocket.listen(5)

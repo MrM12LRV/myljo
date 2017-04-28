@@ -1,15 +1,8 @@
 
 import socket
-import game_util
 from time import sleep
 import Tkinter
-
-def run():
-    print "Hi Myles, you are a(n)" + game_util.add_strings("dank","meme")
-
-    result = game_util.add_numbers(3,5)
-
-    return result
+from sys import argv
 
 def client_thread(clientsocket):
     print "Client: In client thread"
@@ -23,7 +16,8 @@ def run_client():
         except: print "########Exception########"; continue
         break
 
-    s.connect((socket.gethostname(), 12348))
+    host = socket.gethostname() if len(argv) <= 1 else argv[1]
+    s.connect((host, 8000))
 
     player_id = s.recv(1024)
 
