@@ -7,8 +7,8 @@ from time import sleep
 
 NUM_PLAYERS = 2
 
-def recv_char(socket):
-    try: return socket.recv(1)
+def recv_char(s):
+    try: return s.recv(1)
     except: return None
 
 class Player(object):
@@ -64,45 +64,30 @@ def run_server():
     p2.clientsocket.setblocking(0)
 
     root = Tkinter.Tk()
-    c = Tkinter.Canvas(root, width = 400, height = 400)
+    c = Tkinter.Canvas(root, width = 100, height = 100)
     c.pack()
-    c.create_rectangle(0,0,400,400, fill="yellow")
+    c.create_rectangle(0,0,400,400, fill="black")
 
     class Struct(object): pass
     data = Struct()
-
-    data.p1x = 50; data.p1y = 50; data.p1r = 5
-    data.p2x = 100; data.p2y = 100; data.p2r = 5
-    data.c = c
     data.p1 = p1
     data.p2 = p2
 
-    def checkRecv(data):
-        data.c.delete(Tkinter.ALL)
-        data.c.create_rectangle(0,0,400,400, fill="yellow")
-        ccreate_rectangle(data.c, data.p1x, data.p1y, data.p1r, fill="blue")
-        ccreate_rectangle(data.c, data.p2x, data.p2y, data.p2r, fill="red")
+    def serverRecv(data):
 
         p1move = recv_char(data.p1.clientsocket)
         p2move = recv_char(data.p2.clientsocket)
 
         if p1move != None:
-            if p1move == "w": data.p1y -= 5
-            if p1move == "s": data.p1y += 5
-            if p1move == "a": data.p1x -= 5
-            if p1move == "d": data.p1x += 5
-            print "P1:", p1move
+            data.p2.clientsocket.send(p1move)
         if p2move != None:
-            if p2move == "w": data.p2y -= 5
-            if p2move == "s": data.p2y += 5
-            if p2move == "a": data.p2x -= 5
-            if p2move == "d": data.p2x += 5
-            print "P2:", p2move
+            data.p1.clientsocket.send(p2move)
 
-    def me(data):
-        checkRecv(data)
-        c.after(100, me, data)
-    me(data)
+    def timerCallback(data):
+        serverRecv(data)
+        c.after(100, timerCallback, data)
+    timerCallback(data)
+
     root.mainloop()
 
 if __name__ == "__main__":
