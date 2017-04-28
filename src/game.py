@@ -32,8 +32,11 @@ def run_client():
     class Struct(object): pass
     data = Struct()
 
-    data.p0x = 50; data.p0y = 50; data.p0r = 5
-    data.p1x = 100; data.p1y = 100; data.p1r = 5
+    data.players_pos = [Struct()]*10
+    for i in xrange(len(data.players_pos)):
+        data.players_pos[i].x = 20 * i
+        data.players_pos[i].y = 50
+        data.players_pos[i].r = 5
     data.c = c
     data.serversocket = s
 
@@ -41,31 +44,39 @@ def run_client():
     c.update()
     window.bind("<Key>", lambda event: keyPressedHandler(event, data))
 
+    def drawBoard(data):
+        colors = ["blue", "red", "green", "black", "white", "purple", "yellow"]
+        data.c.delete(Tkinter.ALL)
+        data.c.create_rectangle(0,0,400,400, fill="yellow")
+        c.create_text(50,10, text="player: " + str(player_id))
+        for i in xrange(len(data.players_pos)):
+            ccreate_rectangle(data.c,
+                              data.players_pos[i].x,
+                              data.players_pos[i].y,
+                              data.players_pos[i].r, fill=colors[i%len(colors)])
+
     def keyPressedHandler(event, data):
         # Update remote
         data.serversocket.send(event.char)
         print event.char
         # Update local
-        if player_id == "0":
-            if event.char == "w": data.p0y -= 5
-            if event.char == "a": data.p0x -= 5
-            if event.char == "s": data.p0y += 5
-            if event.char == "d": data.p0x += 5
-        if player_id == "1":
-            if event.char == "w": data.p1y -= 5
-            if event.char == "a": data.p1x -= 5
-            if event.char == "s": data.p1y += 5
-            if event.char == "d": data.p1x += 5
+        player_idx = int(player_id)
 
-        data.c.delete(Tkinter.ALL)
-        data.c.create_rectangle(0,0,400,400, fill="yellow")
-        c.create_text(50,10, text="player: " + str(player_id))
-        ccreate_rectangle(data.c, data.p0x, data.p0y, data.p0r, fill="blue")
-        ccreate_rectangle(data.c, data.p1x, data.p1y, data.p1r, fill="red")
+        if event.char == "w": data.players_pos[player_idx].y -= 5
+        if event.char == "a": data.players_pos[player_idx].x -= 5
+        if event.char == "s": data.players_pos[player_idx].y += 5
+        if event.char == "d": data.players_pos[player_idx].x += 5
+
+        drawBoard(data)
+
+
 
 
     def checkRecv(data):
+        # TODO: change what a message looks like.  We need to know where it
+        #   is coming from here.
         omove = recv_char(data.serversocket)
+        player_idx = int(player_id)
 
         if omove != None:
             if player_id == "0":
@@ -79,11 +90,7 @@ def run_client():
                 if omove == "s": data.p0y += 5
                 if omove == "d": data.p0x += 5
 
-        data.c.delete(Tkinter.ALL)
-        data.c.create_rectangle(0,0,400,400, fill="yellow")
-        c.create_text(50,10, text="player: " + str(player_id))
-        ccreate_rectangle(data.c, data.p0x, data.p0y, data.p0r, fill="blue")
-        ccreate_rectangle(data.c, data.p1x, data.p1y, data.p1r, fill="red")
+        drawBoard(data)
 
     def timerCallback(data):
         checkRecv(data)
